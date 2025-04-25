@@ -1,47 +1,27 @@
-# Usage
-Provide the GitHub username as an argument when running the CLI.
-
-Detailed report:
-```powershell
-github-activity <username>
-```
-Summarized report:
-```powershell
-github-activity summary <username> 
-```
-
 # How It Works
 Fetch the recent activity of the specified GitHub user using the GitHub API.
 
-# Sample Detailed Output
+# Usage
+Provide the GitHub username as an argument when running the CLI.
+
+Basic report:
 ```powershell
-====================================================================
-                        Recent Activities      
-====================================================================
-
-- Pushed new commit to ItIsMeMyselfAndI/github_activity_cli
-    at 13:09:04 (Apr 21, 2025)
-- Pushed new commit to ItIsMeMyselfAndI/github_activity_cli
-    at 09:14:56 (Apr 15, 2025)
-- Created ItIsMeMyselfAndI/github_activity_cli
-    at 09:14:56 (Apr 15, 2025)
-- Starred ItIsMeMyselfAndI/github_activity_cli
-- Followed ItIsMeMyselfAndI/github_activity_cli
-- Opened a new issue in ItIsMeMyselfAndI/github_activity_cli
-    at 23:48:22 (Mar 30, 2025)
-- ...
-
-====================================================================
+github-activity <username>
+```
+Detailed report:
+```powershell
+github-activity <username> <token>
 ```
 
-# Sample Summarized Output
+# Sample Output
 ```powershell
 ====================================================================
                         Recent Activities      
 ====================================================================
 
+- Followed ItIsMeMyselfAndI/github_activity_cli
 - Pushed 3 commits to ItIsMeMyselfAndI/github_activity_cli
-- Created 3 repositories 
+- Created 3 new repositories 
 - Opened a new issue in ItIsMeMyselfAndI/github_activity_cli
 - Starred ItIsMeMyselfAndI/github_activity_cli
 - ...
