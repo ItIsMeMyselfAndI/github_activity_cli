@@ -15,7 +15,7 @@ python github-activity <username>
                         Recent Activities      
 ====================================================================
 
-- Followed ItIsMeMyselfAndI/github_activity_cli
+- Followed ItIsMeMyselfAndI
 - Pushed 3 commit(s) to "ItIsMeMyselfAndI/github_activity_cli" at 2025-04-15T16:41:24Z
 - Created new repository "ItIsMeMyselfAndI/github_activity_cli" at 2025-04-15T16:41:24Z
 - Changed visibility to public in "ItIsMeMyselfAndI/github_activity_cli" at 2025-04-15T16:41:24Z
