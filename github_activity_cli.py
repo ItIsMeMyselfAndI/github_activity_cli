@@ -20,7 +20,7 @@ class GithubActivity:
         message = (
             f"{"="*WIDTH}\n"
             f"\n{error}\n\n"
-            f"{"="*WIDTH}\n"
+            f"{"="*WIDTH}"
         )
         return message
 
@@ -36,55 +36,44 @@ class GithubActivity:
         usernames = [user["full_name"] for user in response]
         return usernames
 
+    def getIssues(url:str) -> list:
+            response = requests.get(url).json()
+            issues = [{"repo":issue["repo"], "created_at":issue["created_at"] , 
+                 "updated_at":issue["updated_at"]} for issue in response]
+            return issues
+
     @staticmethod
     def getBasicEvents(url:str) -> list:
         response = requests.get(url + "/events").json()
         events = []
         for event in response:
-            events.append({event["type"]:event["repo"]["name"]})
+            events.append({"type":event["type"], "repo":event["repo"]["name"]})
         return events
     
     @staticmethod
-    def _getUserRepos(url:str) -> list:
-        response = requests.get(url).json()
-        repos = [(repo["name"], repo["url"]) for repo in response]
+    def _getUserRepos(url:str, headers) -> list:
+        response = requests.get(url, headers=headers).json()
+        repos = [repo["url"] for repo in response]
         return repos
     
     @staticmethod
     def getDetailedEvents(url:str, token:str) -> list:
-        # detailed
-        repos = GithubActivity._getUserRepos(url + "/repos")
         headers = {"Authorization": f"Bearer {token}"}
+        repos = GithubActivity._getUserRepos(url + "/repos", headers)
         events = []
-        for i, repo in enumerate(repos):
-            if i != 4:
+        for repo_url in repos:
+            response = requests.get(repo_url + "/events", headers=headers).json()
+            if len(response) == 0:
                 continue
-            response = requests.get(repo[1] + "/events", headers=headers).json()
-            pushes_count = 0
-            publics_count = 0
-            for push in response:
-                if push["type"] == "PushEvent":
-                    pushes_count += 1
-                elif push["type"] == "PublicEvent":
-                    publics_count += 1
-                print(push)
-                print()
-
-            event = None
-            if pushes_count > 0:
-                event = {repo[0]:{
-                    "PushEvents":pushes_count,
-                }}
-            if publics_count > 0:
-                event[repo[0]]["PublicEvents"] = publics_count
-            event.append(event)
+            for event in response:
+                details = {
+                    "name":event["repo"]["name"], "type":event["type"],
+                    "timestamp":event["created_at"], "url":event["repo"]["url"]
+                }
+                if event["type"] == "PushEvent":
+                    details["commits"] = event["payload"]["size"]
+                events.append(details)
         return events
-            
-
-
-        
-
-        
 
 
 def _isValidArgv(argv:list) -> bool:
@@ -114,24 +103,35 @@ def main() -> None:
         print(message)
         return
     
-    # following = GithubActivity.getUsernames(user_endpoint + "/following")
-    # print(following)
-    # print()
-    # starred = GithubActivity.getFullNames(user_endpoint + "/starred")
-    # print(starred)
-    # print()
-    # watching = GithubActivity.getFullNames(user_endpoint + "/subscriptions")
-    # print(watching)
-    # print()
-    # my_events = GithubActivity.getEvents(user_endpoint)
-    # print(my_events)
-    # print()
-    # print(GithubActivity.getBasicEvents(user_endpoint))
-    # print()
-    GithubActivity.getDetailedEvents(user_endpoint, token)
+    following = GithubActivity.getUsernames(user_endpoint + "/following")
+    print(following)
+    print()
+    starred = GithubActivity.getFullNames(user_endpoint + "/starred")
+    print(starred)
+    print()
+    watching = GithubActivity.getFullNames(user_endpoint + "/subscriptions")
+    print(watching)
+    print()
+    events = GithubActivity.getBasicEvents(user_endpoint)
+    print(events)
+    print()
+    events = GithubActivity.getDetailedEvents(user_endpoint, token)
+    print(events)
+    print()
 
 
 if __name__ == "__main__":
     print()
+
+    message = (
+        f"{"="*WIDTH}\n"
+        "\n[!] API rate limit exceeded.\n"
+        "\tTry again later.\n\n"
+        f"{"="*WIDTH}"
+    )
+    # try:
     main()
+    # except TypeError:
+    #     print(message)
+
     print()
