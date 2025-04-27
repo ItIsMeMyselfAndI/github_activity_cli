@@ -6,10 +6,12 @@ WIDTH = os.get_terminal_size().columns
 
 class GithubActivity:
     @staticmethod
-    def _requestValidResponse(url:str, headers:dict=None) -> list:
-        response = requests.get(url, headers=headers).json()
+    def _requestValidResponse(url:str) -> list:
+        response = requests.get(url).json()
         try:
             if "Not Found" in response["message"]:
+                print(url)
+                print(response)
                 error = "[!] Invalid username.\n\tCheck username and try again."
             elif "API rate limit" in response["message"]:
                 error = "[!] API rate limit exceeded.\n\tWait and try again later."
@@ -47,7 +49,7 @@ class GithubActivity:
     def getUsernames(url:str) -> list:
         response = GithubActivity._requestValidResponse(url)
         usernames = [{"type":"following", "username":user["login"]} for user in response]
-        return None
+        return usernames 
 
     @staticmethod
     def formatActivities(activities:list) -> str:
@@ -107,7 +109,7 @@ def main() -> None:
         return
 
     base_url = f"https://api.github.com"
-    username = (sys.argv[1], None) if len(sys.argv) == 2 else (sys.argv[1], sys.argv[2])
+    username = sys.argv[1]
     user_endpoint = f"{base_url}/users/{username}"
 
     events = GithubActivity.getEvents(user_endpoint + "/events")
