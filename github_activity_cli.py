@@ -20,9 +20,9 @@ class GithubActivity:
         except TypeError:
             return response
         message = (
-            f"{"="*WIDTH}\n"
+            f"{'='*WIDTH}\n"
             f"\n{error}\n\n"
-            f"{"="*WIDTH}\n"
+            f"{'='*WIDTH}\n"
         )
         print(message)
         exit(0)
@@ -94,10 +94,10 @@ class GithubActivity:
         
 def _isValidArgv(argv:list) -> bool:
     message = (
-        f"{"="*WIDTH}\n"
+        f"{'='*WIDTH}\n"
         "\n[!] Invalid command.\n"
         "\tCheck README.md file.\n\n"
-        f"{"="*WIDTH}"
+        f"{'='*WIDTH}"
     )
     if (len(argv) <= 1) or (len(argv) > 2):
         print(message)
@@ -122,11 +122,11 @@ def main() -> None:
         formatted = GithubActivity.formatActivities(activities)
 
     display = (
-        f"{"="*WIDTH}\n\n"
-        f"{"Recent Activities".center(WIDTH)}\n\n"
-        f"{"="*WIDTH}\n\n"
+        f"{'='*WIDTH}\n\n"
+        f"{'Recent Activities'.center(WIDTH)}\n\n"
+        f"{'='*WIDTH}\n\n"
         f"{formatted}\n\n"
-        f"{"="*WIDTH}"
+        f"{'='*WIDTH}"
     )
     print(display)
 
